@@ -3,7 +3,7 @@
 PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.ruoyi.math.mapper.TestMathSubMapper">
-    
+
     <resultMap type="TestMathSub" id="TestMathSubResult">
         <result property="questionId"    column="question_id"    />
         <result property="content"    column="content"    />
@@ -16,26 +16,31 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 
     <select id="selectTestMathSubList" parameterType="TestMathSub" resultMap="TestMathSubResult">
         <include refid="selectTestMathSubVo"/>
-        <where>  
+        <where>
             <if test="questionId != null  and questionId != ''"> and question_id = #{questionId}</if>
             <if test="content != null  and content != ''"> and content like concat('%', #{content}, '%')</if>
         </where>
     </select>
-    
+
     <select id="selectTestMathSubByQuestionId" parameterType="String" resultMap="TestMathSubResult">
         <include refid="selectTestMathSubVo"/>
         where question_id = #{questionId}
     </select>
-        
+
     <insert id="insertTestMathSub" parameterType="TestMathSub">
+        <selectKey keyProperty="questionId" resultType="String" order="BEFORE">
+            select concat(date_format(curdate(), '%Y%m%d'), IFNULL((count(*) + 1), 1))
+            from test_math_sub
+            where substr(question_id, 1, 8) = date_format(curdate(), '%Y%m%d')
+        </selectKey>
         insert into test_math_sub
         <trim prefix="(" suffix=")" suffixOverrides=",">
-            <if test="questionId != null">question_id,</if>
+            question_id,
             <if test="content != null and content != ''">content,</if>
             <if test="answer != null and answer != ''">answer,</if>
          </trim>
         <trim prefix="values (" suffix=")" suffixOverrides=",">
-            <if test="questionId != null">#{questionId},</if>
+            #{questionId},
             <if test="content != null and content != ''">#{content},</if>
             <if test="answer != null and answer != ''">#{answer},</if>
          </trim>
@@ -55,7 +60,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
     </delete>
 
     <delete id="deleteTestMathSubByQuestionIds" parameterType="String">
-        delete from test_math_sub where question_id in 
+        delete from test_math_sub where question_id in
         <foreach item="questionId" collection="array" open="(" separator="," close=")">
             #{questionId}
         </foreach>

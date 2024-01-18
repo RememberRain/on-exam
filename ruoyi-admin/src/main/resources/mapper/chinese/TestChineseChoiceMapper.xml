@@ -3,7 +3,7 @@
 PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.ruoyi.chinese.mapper.TestChineseChoiceMapper">
-    
+
     <resultMap type="TestChineseChoice" id="TestChineseChoiceResult">
         <result property="questionId"    column="question_id"    />
         <result property="content"    column="content"    />
@@ -21,22 +21,27 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 
     <select id="selectTestChineseChoiceList" parameterType="TestChineseChoice" resultMap="TestChineseChoiceResult">
         <include refid="selectTestChineseChoiceVo"/>
-        <where>  
+        <where>
             <if test="questionId != null  and questionId != ''"> and question_id like concat('%', #{questionId}, '%')</if>
             <if test="content != null  and content != ''"> and content like concat('%', #{content}, '%')</if>
             <if test="type != null  and type != ''"> and type = #{type}</if>
         </where>
     </select>
-    
+
     <select id="selectTestChineseChoiceByQuestionId" parameterType="String" resultMap="TestChineseChoiceResult">
         <include refid="selectTestChineseChoiceVo"/>
         where question_id = #{questionId}
     </select>
-        
+
     <insert id="insertTestChineseChoice" parameterType="TestChineseChoice">
+        <selectKey keyProperty="questionId" resultType="String" order="BEFORE">
+            select concat(date_format(curdate(), '%Y%m%d'), IFNULL((count(*) + 1), 1))
+            from test_chinese_choice
+            where substr(question_id, 1, 8) = date_format(curdate(), '%Y%m%d')
+        </selectKey>
         insert into test_chinese_choice
         <trim prefix="(" suffix=")" suffixOverrides=",">
-            <if test="questionId != null">question_id,</if>
+            question_id,
             <if test="content != null and content != ''">content,</if>
             <if test="choiceOne != null and choiceOne != ''">choice_one,</if>
             <if test="choiceTwo != null and choiceTwo != ''">choice_two,</if>
@@ -44,9 +49,9 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
             <if test="choiceFour != null and choiceFour != ''">choice_four,</if>
             <if test="answer != null and answer != ''">answer,</if>
             <if test="type != null and type != ''">type,</if>
-         </trim>
+        </trim>
         <trim prefix="values (" suffix=")" suffixOverrides=",">
-            <if test="questionId != null">#{questionId},</if>
+            #{questionId},
             <if test="content != null and content != ''">#{content},</if>
             <if test="choiceOne != null and choiceOne != ''">#{choiceOne},</if>
             <if test="choiceTwo != null and choiceTwo != ''">#{choiceTwo},</if>
@@ -76,7 +81,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
     </delete>
 
     <delete id="deleteTestChineseChoiceByQuestionIds" parameterType="String">
-        delete from test_chinese_choice where question_id in 
+        delete from test_chinese_choice where question_id in
         <foreach item="questionId" collection="array" open="(" separator="," close=")">
             #{questionId}
         </foreach>

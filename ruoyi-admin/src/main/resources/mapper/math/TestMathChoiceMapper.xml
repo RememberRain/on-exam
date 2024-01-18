@@ -3,7 +3,7 @@
 PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.ruoyi.math.mapper.TestMathChoiceMapper">
-    
+
     <resultMap type="TestMathChoice" id="TestMathChoiceResult">
         <result property="questionId"    column="question_id"    />
         <result property="content"    column="content"    />
@@ -21,22 +21,27 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 
     <select id="selectTestMathChoiceList" parameterType="TestMathChoice" resultMap="TestMathChoiceResult">
         <include refid="selectTestMathChoiceVo"/>
-        <where>  
+        <where>
             <if test="questionId != null  and questionId != ''"> and question_id like concat('%', #{questionId}, '%')</if>
             <if test="content != null  and content != ''"> and content like concat('%', #{content}, '%')</if>
             <if test="type != null  and type != ''"> and type = #{type}</if>
         </where>
     </select>
-    
+
     <select id="selectTestMathChoiceByQuestionId" parameterType="String" resultMap="TestMathChoiceResult">
         <include refid="selectTestMathChoiceVo"/>
         where question_id = #{questionId}
     </select>
-        
+
     <insert id="insertTestMathChoice" parameterType="TestMathChoice">
+        <selectKey keyProperty="questionId" resultType="String" order="BEFORE">
+            select concat(date_format(curdate(), '%Y%m%d'), IFNULL((count(*) + 1), 1))
+            from test_math_choice
+            where substr(question_id, 1, 8) = date_format(curdate(), '%Y%m%d')
+        </selectKey>
         insert into test_math_choice
         <trim prefix="(" suffix=")" suffixOverrides=",">
-            <if test="questionId != null">question_id,</if>
+            question_id,
             <if test="content != null">content,</if>
             <if test="choiceOne != null">choice_one,</if>
             <if test="choiceTwo != null">choice_two,</if>
@@ -46,7 +51,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
             <if test="type != null">type,</if>
          </trim>
         <trim prefix="values (" suffix=")" suffixOverrides=",">
-            <if test="questionId != null">#{questionId},</if>
+            #{questionId},
             <if test="content != null">#{content},</if>
             <if test="choiceOne != null">#{choiceOne},</if>
             <if test="choiceTwo != null">#{choiceTwo},</if>
@@ -76,7 +81,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
     </delete>
 
     <delete id="deleteTestMathChoiceByQuestionIds" parameterType="String">
-        delete from test_math_choice where question_id in 
+        delete from test_math_choice where question_id in
         <foreach item="questionId" collection="array" open="(" separator="," close=")">
             #{questionId}
         </foreach>

@@ -1,0 +1,84 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.ruoyi.math.mapper.TestMathChoiceMapper">
+    
+    <resultMap type="TestMathChoice" id="TestMathChoiceResult">
+        <result property="questionId"    column="question_id"    />
+        <result property="content"    column="content"    />
+        <result property="choiceOne"    column="choice_one"    />
+        <result property="choiceTwo"    column="choice_two"    />
+        <result property="choiceThree"    column="choice_three"    />
+        <result property="choiceFour"    column="choice_four"    />
+        <result property="answer"    column="answer"    />
+        <result property="type"    column="type"    />
+    </resultMap>
+
+    <sql id="selectTestMathChoiceVo">
+        select question_id, content, choice_one, choice_two, choice_three, choice_four, answer, type from test_math_choice
+    </sql>
+
+    <select id="selectTestMathChoiceList" parameterType="TestMathChoice" resultMap="TestMathChoiceResult">
+        <include refid="selectTestMathChoiceVo"/>
+        <where>  
+            <if test="questionId != null  and questionId != ''"> and question_id like concat('%', #{questionId}, '%')</if>
+            <if test="content != null  and content != ''"> and content like concat('%', #{content}, '%')</if>
+            <if test="type != null  and type != ''"> and type = #{type}</if>
+        </where>
+    </select>
+    
+    <select id="selectTestMathChoiceByQuestionId" parameterType="String" resultMap="TestMathChoiceResult">
+        <include refid="selectTestMathChoiceVo"/>
+        where question_id = #{questionId}
+    </select>
+        
+    <insert id="insertTestMathChoice" parameterType="TestMathChoice">
+        insert into test_math_choice
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="questionId != null">question_id,</if>
+            <if test="content != null">content,</if>
+            <if test="choiceOne != null">choice_one,</if>
+            <if test="choiceTwo != null">choice_two,</if>
+            <if test="choiceThree != null">choice_three,</if>
+            <if test="choiceFour != null">choice_four,</if>
+            <if test="answer != null">answer,</if>
+            <if test="type != null">type,</if>
+         </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="questionId != null">#{questionId},</if>
+            <if test="content != null">#{content},</if>
+            <if test="choiceOne != null">#{choiceOne},</if>
+            <if test="choiceTwo != null">#{choiceTwo},</if>
+            <if test="choiceThree != null">#{choiceThree},</if>
+            <if test="choiceFour != null">#{choiceFour},</if>
+            <if test="answer != null">#{answer},</if>
+            <if test="type != null">#{type},</if>
+         </trim>
+    </insert>
+
+    <update id="updateTestMathChoice" parameterType="TestMathChoice">
+        update test_math_choice
+        <trim prefix="SET" suffixOverrides=",">
+            <if test="content != null">content = #{content},</if>
+            <if test="choiceOne != null">choice_one = #{choiceOne},</if>
+            <if test="choiceTwo != null">choice_two = #{choiceTwo},</if>
+            <if test="choiceThree != null">choice_three = #{choiceThree},</if>
+            <if test="choiceFour != null">choice_four = #{choiceFour},</if>
+            <if test="answer != null">answer = #{answer},</if>
+            <if test="type != null">type = #{type},</if>
+        </trim>
+        where question_id = #{questionId}
+    </update>
+
+    <delete id="deleteTestMathChoiceByQuestionId" parameterType="String">
+        delete from test_math_choice where question_id = #{questionId}
+    </delete>
+
+    <delete id="deleteTestMathChoiceByQuestionIds" parameterType="String">
+        delete from test_math_choice where question_id in 
+        <foreach item="questionId" collection="array" open="(" separator="," close=")">
+            #{questionId}
+        </foreach>
+    </delete>
+</mapper>

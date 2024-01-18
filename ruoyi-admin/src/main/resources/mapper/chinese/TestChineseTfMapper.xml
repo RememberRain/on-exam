@@ -1,0 +1,71 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.ruoyi.chinese.mapper.TestChineseTfMapper">
+    
+    <resultMap type="TestChineseTf" id="TestChineseTfResult">
+        <result property="questionId"    column="question_id"    />
+        <result property="content"    column="content"    />
+        <result property="choiceOne"    column="choice_one"    />
+        <result property="choiceTwo"    column="choice_two"    />
+        <result property="answer"    column="answer"    />
+    </resultMap>
+
+    <sql id="selectTestChineseTfVo">
+        select question_id, content, choice_one, choice_two, answer from test_chinese_tf
+    </sql>
+
+    <select id="selectTestChineseTfList" parameterType="TestChineseTf" resultMap="TestChineseTfResult">
+        <include refid="selectTestChineseTfVo"/>
+        <where>  
+            <if test="questionId != null  and questionId != ''"> and question_id like concat('%', #{questionId}, '%')</if>
+            <if test="content != null  and content != ''"> and content like concat('%', #{content}, '%')</if>
+        </where>
+    </select>
+    
+    <select id="selectTestChineseTfByQuestionId" parameterType="String" resultMap="TestChineseTfResult">
+        <include refid="selectTestChineseTfVo"/>
+        where question_id = #{questionId}
+    </select>
+        
+    <insert id="insertTestChineseTf" parameterType="TestChineseTf">
+        insert into test_chinese_tf
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="questionId != null">question_id,</if>
+            <if test="content != null and content != ''">content,</if>
+            <if test="choiceOne != null and choiceOne != ''">choice_one,</if>
+            <if test="choiceTwo != null and choiceTwo != ''">choice_two,</if>
+            <if test="answer != null and answer != ''">answer,</if>
+         </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="questionId != null">#{questionId},</if>
+            <if test="content != null and content != ''">#{content},</if>
+            <if test="choiceOne != null and choiceOne != ''">#{choiceOne},</if>
+            <if test="choiceTwo != null and choiceTwo != ''">#{choiceTwo},</if>
+            <if test="answer != null and answer != ''">#{answer},</if>
+         </trim>
+    </insert>
+
+    <update id="updateTestChineseTf" parameterType="TestChineseTf">
+        update test_chinese_tf
+        <trim prefix="SET" suffixOverrides=",">
+            <if test="content != null and content != ''">content = #{content},</if>
+            <if test="choiceOne != null and choiceOne != ''">choice_one = #{choiceOne},</if>
+            <if test="choiceTwo != null and choiceTwo != ''">choice_two = #{choiceTwo},</if>
+            <if test="answer != null and answer != ''">answer = #{answer},</if>
+        </trim>
+        where question_id = #{questionId}
+    </update>
+
+    <delete id="deleteTestChineseTfByQuestionId" parameterType="String">
+        delete from test_chinese_tf where question_id = #{questionId}
+    </delete>
+
+    <delete id="deleteTestChineseTfByQuestionIds" parameterType="String">
+        delete from test_chinese_tf where question_id in 
+        <foreach item="questionId" collection="array" open="(" separator="," close=")">
+            #{questionId}
+        </foreach>
+    </delete>
+</mapper>

@@ -1,0 +1,63 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.ruoyi.math.mapper.TestMathSubMapper">
+    
+    <resultMap type="TestMathSub" id="TestMathSubResult">
+        <result property="questionId"    column="question_id"    />
+        <result property="content"    column="content"    />
+        <result property="answer"    column="answer"    />
+    </resultMap>
+
+    <sql id="selectTestMathSubVo">
+        select question_id, content, answer from test_math_sub
+    </sql>
+
+    <select id="selectTestMathSubList" parameterType="TestMathSub" resultMap="TestMathSubResult">
+        <include refid="selectTestMathSubVo"/>
+        <where>  
+            <if test="questionId != null  and questionId != ''"> and question_id = #{questionId}</if>
+            <if test="content != null  and content != ''"> and content like concat('%', #{content}, '%')</if>
+        </where>
+    </select>
+    
+    <select id="selectTestMathSubByQuestionId" parameterType="String" resultMap="TestMathSubResult">
+        <include refid="selectTestMathSubVo"/>
+        where question_id = #{questionId}
+    </select>
+        
+    <insert id="insertTestMathSub" parameterType="TestMathSub">
+        insert into test_math_sub
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="questionId != null">question_id,</if>
+            <if test="content != null and content != ''">content,</if>
+            <if test="answer != null and answer != ''">answer,</if>
+         </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="questionId != null">#{questionId},</if>
+            <if test="content != null and content != ''">#{content},</if>
+            <if test="answer != null and answer != ''">#{answer},</if>
+         </trim>
+    </insert>
+
+    <update id="updateTestMathSub" parameterType="TestMathSub">
+        update test_math_sub
+        <trim prefix="SET" suffixOverrides=",">
+            <if test="content != null and content != ''">content = #{content},</if>
+            <if test="answer != null and answer != ''">answer = #{answer},</if>
+        </trim>
+        where question_id = #{questionId}
+    </update>
+
+    <delete id="deleteTestMathSubByQuestionId" parameterType="String">
+        delete from test_math_sub where question_id = #{questionId}
+    </delete>
+
+    <delete id="deleteTestMathSubByQuestionIds" parameterType="String">
+        delete from test_math_sub where question_id in 
+        <foreach item="questionId" collection="array" open="(" separator="," close=")">
+            #{questionId}
+        </foreach>
+    </delete>
+</mapper>

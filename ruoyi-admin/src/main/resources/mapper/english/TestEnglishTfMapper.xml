@@ -1,0 +1,71 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.ruoyi.english.mapper.TestEnglishTfMapper">
+    
+    <resultMap type="TestEnglishTf" id="TestEnglishTfResult">
+        <result property="questionId"    column="question_id"    />
+        <result property="content"    column="content"    />
+        <result property="choiceOne"    column="choice_one"    />
+        <result property="choiceTwo"    column="choice_two"    />
+        <result property="answer"    column="answer"    />
+    </resultMap>
+
+    <sql id="selectTestEnglishTfVo">
+        select question_id, content, choice_one, choice_two, answer from test_english_tf
+    </sql>
+
+    <select id="selectTestEnglishTfList" parameterType="TestEnglishTf" resultMap="TestEnglishTfResult">
+        <include refid="selectTestEnglishTfVo"/>
+        <where>  
+            <if test="questionId != null  and questionId != ''"> and question_id like concat('%', #{questionId}, '%')</if>
+            <if test="content != null  and content != ''"> and content like concat('%', #{content}, '%')</if>
+        </where>
+    </select>
+    
+    <select id="selectTestEnglishTfByQuestionId" parameterType="String" resultMap="TestEnglishTfResult">
+        <include refid="selectTestEnglishTfVo"/>
+        where question_id = #{questionId}
+    </select>
+        
+    <insert id="insertTestEnglishTf" parameterType="TestEnglishTf">
+        insert into test_english_tf
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="questionId != null">question_id,</if>
+            <if test="content != null and content != ''">content,</if>
+            <if test="choiceOne != null and choiceOne != ''">choice_one,</if>
+            <if test="choiceTwo != null and choiceTwo != ''">choice_two,</if>
+            <if test="answer != null and answer != ''">answer,</if>
+         </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="questionId != null">#{questionId},</if>
+            <if test="content != null and content != ''">#{content},</if>
+            <if test="choiceOne != null and choiceOne != ''">#{choiceOne},</if>
+            <if test="choiceTwo != null and choiceTwo != ''">#{choiceTwo},</if>
+            <if test="answer != null and answer != ''">#{answer},</if>
+         </trim>
+    </insert>
+
+    <update id="updateTestEnglishTf" parameterType="TestEnglishTf">
+        update test_english_tf
+        <trim prefix="SET" suffixOverrides=",">
+            <if test="content != null and content != ''">content = #{content},</if>
+            <if test="choiceOne != null and choiceOne != ''">choice_one = #{choiceOne},</if>
+            <if test="choiceTwo != null and choiceTwo != ''">choice_two = #{choiceTwo},</if>
+            <if test="answer != null and answer != ''">answer = #{answer},</if>
+        </trim>
+        where question_id = #{questionId}
+    </update>
+
+    <delete id="deleteTestEnglishTfByQuestionId" parameterType="String">
+        delete from test_english_tf where question_id = #{questionId}
+    </delete>
+
+    <delete id="deleteTestEnglishTfByQuestionIds" parameterType="String">
+        delete from test_english_tf where question_id in 
+        <foreach item="questionId" collection="array" open="(" separator="," close=")">
+            #{questionId}
+        </foreach>
+    </delete>
+</mapper>

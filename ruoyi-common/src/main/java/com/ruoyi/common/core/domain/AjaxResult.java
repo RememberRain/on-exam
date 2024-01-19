@@ -137,6 +137,36 @@ public class AjaxResult extends HashMap<String, Object>
 
     /**
      * 返回错误消息
+     *
+     * @return 错误消息
+     */
+    public static AjaxResult errorAccount()
+    {
+        return AjaxResult.error("该账号已存在!");
+    }
+
+    /**
+     * 返回错误消息
+     *
+     * @return 错误消息
+     */
+    public static AjaxResult errorEmail()
+    {
+        return AjaxResult.error("该邮箱已存在!");
+    }
+
+    /**
+     * 返回错误消息
+     *
+     * @return 错误消息
+     */
+    public static AjaxResult errorPhone()
+    {
+        return AjaxResult.error("该电话已存在!");
+    }
+
+    /**
+     * 返回错误消息
      * 
      * @param msg 返回内容
      * @return 错误消息

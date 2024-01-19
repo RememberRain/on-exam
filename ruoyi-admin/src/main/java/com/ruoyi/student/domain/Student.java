@@ -1,4 +1,4 @@
-package com.ruoyi.teacher.domain;
+package com.ruoyi.student.domain;
 
 import org.apache.commons.lang3.builder.ToStringBuilder;
 import org.apache.commons.lang3.builder.ToStringStyle;
@@ -6,15 +6,18 @@ import com.ruoyi.common.annotation.Excel;
 import com.ruoyi.common.core.domain.BaseEntity;
 
 /**
- * 教师管理对象 teacher
+ * 学生管理对象 student
+ * 
+ * @author ruoyi
+ * @date 2024-01-18
  */
-public class Teacher extends BaseEntity
+public class Student extends BaseEntity
 {
     private static final long serialVersionUID = 1L;
 
-    /** 工号 */
-    @Excel(name = "工号")
-    private Long teacherId;
+    /** 学号 */
+    @Excel(name = "学号")
+    private Long studentId;
 
     /** 姓名 */
     @Excel(name = "姓名")
@@ -38,165 +41,150 @@ public class Teacher extends BaseEntity
     @Excel(name = "学校")
     private String school;
 
-    /** 教研组 */
-    @Excel(name = "教研组")
-    private String subject;
+    /** 性别 */
+    private String sex;
 
-    /** 角色 */
-    @Excel(name = "角色")
-    private Long role;
-
-    /** 头像 */
-    private String avatar;
+    /** 启用状态 */
+    @Excel(name = "启用状态")
+    private String status;
 
     /** 删除状态 */
     private String delFlag;
 
-    /** 账号状态 */
-    @Excel(name = "账号状态")
-    private String status;
+    /** 头像 */
+    private String avatar;
 
-    /** 性别 */
-    private String sex;
+    /** 角色 */
+    private Long role;
 
-    public void setTeacherId(Long teacherId)
+    public void setStudentId(Long studentId) 
     {
-        this.teacherId = teacherId;
+        this.studentId = studentId;
     }
 
-    public Long getTeacherId()
+    public Long getStudentId() 
     {
-        return teacherId;
+        return studentId;
     }
-    public void setName(String name)
+    public void setName(String name) 
     {
         this.name = name;
     }
 
-    public String getName()
+    public String getName() 
     {
         return name;
     }
-    public void setAccount(String account)
+    public void setAccount(String account) 
     {
         this.account = account;
     }
 
-    public String getAccount()
+    public String getAccount() 
     {
         return account;
     }
-    public void setPassword(String password)
+    public void setPassword(String password) 
     {
         this.password = password;
     }
 
-    public String getPassword()
+    public String getPassword() 
     {
         return password;
     }
-    public void setEmail(String email)
+    public void setEmail(String email) 
     {
         this.email = email;
     }
 
-    public String getEmail()
+    public String getEmail() 
     {
         return email;
     }
-    public void setPhoneNumber(String phoneNumber)
+    public void setPhoneNumber(String phoneNumber) 
     {
         this.phoneNumber = phoneNumber;
     }
 
-    public String getPhoneNumber()
+    public String getPhoneNumber() 
     {
         return phoneNumber;
     }
-    public void setSchool(String school)
+    public void setSchool(String school) 
     {
         this.school = school;
     }
 
-    public String getSchool()
+    public String getSchool() 
     {
         return school;
     }
-    public void setSubject(String subject)
-    {
-        this.subject = subject;
-    }
-
-    public String getSubject()
-    {
-        return subject;
-    }
-    public void setRole(Long role)
-    {
-        this.role = role;
-    }
-
-    public Long getRole()
-    {
-        return role;
-    }
-    public void setAvatar(String avatar)
-    {
-        this.avatar = avatar;
-    }
-
-    public String getAvatar()
-    {
-        return avatar;
-    }
-    public void setDelFlag(String delFlag)
-    {
-        this.delFlag = delFlag;
-    }
-
-    public String getDelFlag()
-    {
-        return delFlag;
-    }
-    public void setStatus(String status)
-    {
-        this.status = status;
-    }
-
-    public String getStatus()
-    {
-        return status;
-    }
-    public void setSex(String sex)
+    public void setSex(String sex) 
     {
         this.sex = sex;
     }
 
-    public String getSex()
+    public String getSex() 
     {
         return sex;
+    }
+    public void setStatus(String status) 
+    {
+        this.status = status;
+    }
+
+    public String getStatus() 
+    {
+        return status;
+    }
+    public void setDelFlag(String delFlag) 
+    {
+        this.delFlag = delFlag;
+    }
+
+    public String getDelFlag() 
+    {
+        return delFlag;
+    }
+    public void setAvatar(String avatar) 
+    {
+        this.avatar = avatar;
+    }
+
+    public String getAvatar() 
+    {
+        return avatar;
+    }
+    public void setRole(Long role) 
+    {
+        this.role = role;
+    }
+
+    public Long getRole() 
+    {
+        return role;
     }
 
     @Override
     public String toString() {
         return new ToStringBuilder(this,ToStringStyle.MULTI_LINE_STYLE)
-            .append("teacherId", getTeacherId())
+            .append("studentId", getStudentId())
             .append("name", getName())
             .append("account", getAccount())
             .append("password", getPassword())
             .append("email", getEmail())
             .append("phoneNumber", getPhoneNumber())
             .append("school", getSchool())
-            .append("subject", getSubject())
-            .append("role", getRole())
+            .append("sex", getSex())
+            .append("status", getStatus())
+            .append("delFlag", getDelFlag())
             .append("createBy", getCreateBy())
             .append("createTime", getCreateTime())
             .append("updateBy", getUpdateBy())
             .append("updateTime", getUpdateTime())
             .append("avatar", getAvatar())
-            .append("delFlag", getDelFlag())
-            .append("status", getStatus())
-            .append("sex", getSex())
+            .append("role", getRole())
             .toString();
     }
 }

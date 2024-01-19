@@ -23,9 +23,6 @@ import com.ruoyi.common.core.page.TableDataInfo;
 
 /**
  * 教师管理Controller
- * 
- * @author ruoyi
- * @date 2024-01-18
  */
 @RestController
 @RequestMapping("/teacher/teacher")
@@ -91,14 +88,14 @@ public class TeacherController extends BaseController
         return toAjax(teacherService.updateTeacher(teacher));
     }
 
-    /**
-     * 删除教师管理
-     */
-    @PreAuthorize("@ss.hasPermi('teacher:teacher:remove')")
-    @Log(title = "教师管理", businessType = BusinessType.DELETE)
-	@DeleteMapping("/{teacherIds}")
-    public AjaxResult remove(@PathVariable Long[] teacherIds)
-    {
-        return toAjax(teacherService.deleteTeacherByTeacherIds(teacherIds));
-    }
+//    /**
+//     * 删除教师管理
+//     */
+//    @PreAuthorize("@ss.hasPermi('teacher:teacher:remove')")
+//    @Log(title = "教师管理", businessType = BusinessType.DELETE)
+//	@DeleteMapping("/{teacherIds}")
+//    public AjaxResult remove(@PathVariable Long[] teacherIds)
+//    {
+//        return toAjax(teacherService.deleteTeacherByTeacherIds(teacherIds));
+//    }
 }

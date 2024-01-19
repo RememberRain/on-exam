@@ -144,9 +144,18 @@ public class BaseController
      * @param rows 影响行数
      * @return 操作结果
      */
-    protected AjaxResult toAjax(int rows)
-    {
-        return rows > 0 ? AjaxResult.success() : AjaxResult.error();
+    protected AjaxResult toAjax(int rows) {
+//        return rows > 0 ? AjaxResult.success() : AjaxResult.error();
+        if (rows == -1){
+            return AjaxResult.errorAccount();
+        }
+        if (rows == -2){
+            return AjaxResult.errorEmail();
+        }
+        if (rows == -3){
+            return AjaxResult.errorPhone();
+        }
+        return AjaxResult.success();
     }
 
     /**

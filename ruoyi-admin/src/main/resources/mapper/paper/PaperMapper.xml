@@ -1,0 +1,106 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.ruoyi.paper.mapper.PaperMapper">
+
+    <resultMap type="Paper" id="PaperResult">
+        <result property="paperId"    column="paper_id"    />
+        <result property="name"    column="name"    />
+        <result property="status"    column="status"    />
+        <result property="subject"    column="subject"    />
+        <result property="createUser"    column="create_user"    />
+        <result property="createUserId"    column="create_user_id"    />
+        <result property="createTime"    column="create_time"    />
+        <result property="updateUser"    column="update_user"    />
+        <result property="updateTime"    column="update_time"    />
+        <result property="startTime"    column="start_time"    />
+        <result property="endTime"    column="end_time"    />
+    </resultMap>
+
+    <sql id="selectPaperVo">
+        select paper_id, name, status, subject, create_user, create_user_id, create_time, update_user, update_time, start_time, end_time from paper
+    </sql>
+
+    <select id="selectPaperList" parameterType="Paper" resultMap="PaperResult">
+        <include refid="selectPaperVo"/>
+        <where>
+            <if test="paperId != null  and paperId != ''"> and paper_id like concat('%', #{paperId}, '%')</if>
+            <if test="name != null  and name != ''"> and name like concat('%', #{name}, '%')</if>
+            <if test="status != null  and status != ''"> and status = #{status}</if>
+            <if test="subject != null  and subject != ''"> and subject = #{subject}</if>
+            <if test="createUser != null  and createUser != ''"> and create_user = #{createUser}</if>
+            <if test="createUserId != null  and createUserId != ''"> and create_user_id = #{createUserId}</if>
+            <if test="startTime != null "> and start_time = #{startTime}</if>
+            <if test="endTime != null "> and end_time = #{endTime}</if>
+        </where>
+    </select>
+
+    <select id="selectPaperByPaperId" parameterType="String" resultMap="PaperResult">
+        <include refid="selectPaperVo"/>
+        where paper_id = #{paperId}
+    </select>
+
+    <insert id="insertPaper" parameterType="Paper">
+        <selectKey keyProperty="paperId" resultType="String" order="BEFORE">
+            select concat(date_format(curdate(), '%Y%m%d'), IFNULL((count(*) + 1), 1))
+            from paper
+            where substr(paper_id, 1, 8) = date_format(curdate(), '%Y%m%d')
+        </selectKey>
+        insert into paper
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            paper_id,
+            <if test="name != null and name != ''">name,</if>
+            <if test="status != null and status != ''">status,</if>
+            <if test="subject != null and subject != ''">subject,</if>
+            <if test="createUser != null">create_user,</if>
+            <if test="createUserId != null and createUserId != ''">create_user_id,</if>
+            <if test="createTime != null">create_time,</if>
+            <if test="updateUser != null">update_user,</if>
+            <if test="updateTime != null">update_time,</if>
+            <if test="startTime != null">start_time,</if>
+            <if test="endTime != null">end_time,</if>
+         </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            #{paperId},
+            <if test="name != null and name != ''">#{name},</if>
+            <if test="status != null and status != ''">#{status},</if>
+            <if test="subject != null and subject != ''">#{subject},</if>
+            <if test="createUser != null">#{createUser},</if>
+            <if test="createUserId != null and createUserId != ''">#{createUserId},</if>
+            <if test="createTime != null">#{createTime},</if>
+            <if test="updateUser != null">#{updateUser},</if>
+            <if test="updateTime != null">#{updateTime},</if>
+            <if test="startTime != null">#{startTime},</if>
+            <if test="endTime != null">#{endTime},</if>
+         </trim>
+    </insert>
+
+    <update id="updatePaper" parameterType="Paper">
+        update paper
+        <trim prefix="SET" suffixOverrides=",">
+            <if test="name != null and name != ''">name = #{name},</if>
+            <if test="status != null and status != ''">status = #{status},</if>
+            <if test="subject != null and subject != ''">subject = #{subject},</if>
+            <if test="createUser != null">create_user = #{createUser},</if>
+            <if test="createUserId != null and createUserId != ''">create_user_id = #{createUserId},</if>
+            <if test="createTime != null">create_time = #{createTime},</if>
+            <if test="updateUser != null">update_user = #{updateUser},</if>
+            <if test="updateTime != null">update_time = #{updateTime},</if>
+            <if test="startTime != null">start_time = #{startTime},</if>
+            <if test="endTime != null">end_time = #{endTime},</if>
+        </trim>
+        where paper_id = #{paperId}
+    </update>
+
+    <delete id="deletePaperByPaperId" parameterType="String">
+        delete from paper where paper_id = #{paperId}
+    </delete>
+
+    <delete id="deletePaperByPaperIds" parameterType="String">
+        delete from paper where paper_id in
+        <foreach item="paperId" collection="array" open="(" separator="," close=")">
+            #{paperId}
+        </foreach>
+    </delete>
+</mapper>

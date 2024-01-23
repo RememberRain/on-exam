@@ -1,0 +1,89 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.ruoyi.english.mapper.TestEnglishChoiceMapper">
+
+    <resultMap type="TestEnglishChoice" id="TestEnglishChoiceResult">
+        <result property="questionId"    column="question_id"    />
+        <result property="content"    column="content"    />
+        <result property="choiceOne"    column="choice_one"    />
+        <result property="choiceTwo"    column="choice_two"    />
+        <result property="choiceThree"    column="choice_three"    />
+        <result property="choiceFour"    column="choice_four"    />
+        <result property="answer"    column="answer"    />
+        <result property="type"    column="type"    />
+    </resultMap>
+
+    <sql id="selectTestEnglishChoiceVo">
+        select question_id, content, choice_one, choice_two, choice_three, choice_four, answer, type from test_english_choice
+    </sql>
+
+    <select id="selectTestEnglishChoiceList" parameterType="TestEnglishChoice" resultMap="TestEnglishChoiceResult">
+        <include refid="selectTestEnglishChoiceVo"/>
+        <where>
+            <if test="questionId != null  and questionId != ''"> and question_id like concat('%', #{questionId}, '%')</if>
+            <if test="content != null  and content != ''"> and content like concat('%', #{content}, '%')</if>
+            <if test="type != null  and type != ''"> and type = #{type}</if>
+        </where>
+    </select>
+
+    <select id="selectTestEnglishChoiceByQuestionId" parameterType="String" resultMap="TestEnglishChoiceResult">
+        <include refid="selectTestEnglishChoiceVo"/>
+        where question_id = #{questionId}
+    </select>
+
+    <insert id="insertTestEnglishChoice" parameterType="TestEnglishChoice">
+        <selectKey keyProperty="questionId" resultType="String" order="BEFORE">
+            select concat(date_format(curdate(), '%Y%m%d'), IFNULL((count(*) + 1), 1))
+            from test_english_choice
+            where substr(question_id, 1, 8) = date_format(curdate(), '%Y%m%d')
+        </selectKey>
+        insert into test_english_choice
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            question_id,
+            <if test="content != null and content != ''">content,</if>
+            <if test="choiceOne != null and choiceOne != ''">choice_one,</if>
+            <if test="choiceTwo != null and choiceTwo != ''">choice_two,</if>
+            <if test="choiceThree != null and choiceThree != ''">choice_three,</if>
+            <if test="choiceFour != null and choiceFour != ''">choice_four,</if>
+            <if test="answer != null and answer != ''">answer,</if>
+            <if test="type != null and type != ''">type,</if>
+         </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            #{questionId},
+            <if test="content != null and content != ''">#{content},</if>
+            <if test="choiceOne != null and choiceOne != ''">#{choiceOne},</if>
+            <if test="choiceTwo != null and choiceTwo != ''">#{choiceTwo},</if>
+            <if test="choiceThree != null and choiceThree != ''">#{choiceThree},</if>
+            <if test="choiceFour != null and choiceFour != ''">#{choiceFour},</if>
+            <if test="answer != null and answer != ''">#{answer},</if>
+            <if test="type != null and type != ''">#{type},</if>
+         </trim>
+    </insert>
+
+    <update id="updateTestEnglishChoice" parameterType="TestEnglishChoice">
+        update test_english_choice
+        <trim prefix="SET" suffixOverrides=",">
+            <if test="content != null and content != ''">content = #{content},</if>
+            <if test="choiceOne != null and choiceOne != ''">choice_one = #{choiceOne},</if>
+            <if test="choiceTwo != null and choiceTwo != ''">choice_two = #{choiceTwo},</if>
+            <if test="choiceThree != null and choiceThree != ''">choice_three = #{choiceThree},</if>
+            <if test="choiceFour != null and choiceFour != ''">choice_four = #{choiceFour},</if>
+            <if test="answer != null and answer != ''">answer = #{answer},</if>
+            <if test="type != null and type != ''">type = #{type},</if>
+        </trim>
+        where question_id = #{questionId}
+    </update>
+
+    <delete id="deleteTestEnglishChoiceByQuestionId" parameterType="String">
+        delete from test_english_choice where question_id = #{questionId}
+    </delete>
+
+    <delete id="deleteTestEnglishChoiceByQuestionIds" parameterType="String">
+        delete from test_english_choice where question_id in
+        <foreach item="questionId" collection="array" open="(" separator="," close=")">
+            #{questionId}
+        </foreach>
+    </delete>
+</mapper>

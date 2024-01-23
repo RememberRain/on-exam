@@ -1,0 +1,85 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.ruoyi.result.mapper.PaperResultMapper">
+    
+    <resultMap type="PaperResult" id="PaperResultResult">
+        <result property="paperId"    column="paper_id"    />
+        <result property="paperName"    column="paper_name"    />
+        <result property="studentId"    column="student_id"    />
+        <result property="studentName"    column="student_name"    />
+        <result property="anwser"    column="anwser"    />
+        <result property="quesScore"    column="ques_score"    />
+        <result property="score"    column="score"    />
+        <result property="rank"    column="rank"    />
+    </resultMap>
+
+    <sql id="selectPaperResultVo">
+        select paper_id, paper_name, student_id, student_name, anwser, ques_score, score, rank from paper_result
+    </sql>
+
+    <select id="selectPaperResultList" parameterType="PaperResult" resultMap="PaperResultResult">
+        <include refid="selectPaperResultVo"/>
+        <where>  
+            <if test="paperId != null  and paperId != ''"> and paper_id like concat('%', #{paperId}, '%')</if>
+            <if test="paperName != null  and paperName != ''"> and paper_name like concat('%', #{paperName}, '%')</if>
+            <if test="studentId != null  and studentId != ''"> and student_id = #{studentId}</if>
+            <if test="studentName != null  and studentName != ''"> and student_name like concat('%', #{studentName}, '%')</if>
+        </where>
+    </select>
+    
+    <select id="selectPaperResultByPaperId" parameterType="String" resultMap="PaperResultResult">
+        <include refid="selectPaperResultVo"/>
+        where paper_id = #{paperId}
+    </select>
+        
+    <insert id="insertPaperResult" parameterType="PaperResult">
+        insert into paper_result
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="paperId != null">paper_id,</if>
+            <if test="paperName != null">paper_name,</if>
+            <if test="studentId != null">student_id,</if>
+            <if test="studentName != null">student_name,</if>
+            <if test="anwser != null">anwser,</if>
+            <if test="quesScore != null">ques_score,</if>
+            <if test="score != null">score,</if>
+            <if test="rank != null">rank,</if>
+         </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="paperId != null">#{paperId},</if>
+            <if test="paperName != null">#{paperName},</if>
+            <if test="studentId != null">#{studentId},</if>
+            <if test="studentName != null">#{studentName},</if>
+            <if test="anwser != null">#{anwser},</if>
+            <if test="quesScore != null">#{quesScore},</if>
+            <if test="score != null">#{score},</if>
+            <if test="rank != null">#{rank},</if>
+         </trim>
+    </insert>
+
+    <update id="updatePaperResult" parameterType="PaperResult">
+        update paper_result
+        <trim prefix="SET" suffixOverrides=",">
+            <if test="paperName != null">paper_name = #{paperName},</if>
+            <if test="studentId != null">student_id = #{studentId},</if>
+            <if test="studentName != null">student_name = #{studentName},</if>
+            <if test="anwser != null">anwser = #{anwser},</if>
+            <if test="quesScore != null">ques_score = #{quesScore},</if>
+            <if test="score != null">score = #{score},</if>
+            <if test="rank != null">rank = #{rank},</if>
+        </trim>
+        where paper_id = #{paperId}
+    </update>
+
+    <delete id="deletePaperResultByPaperId" parameterType="String">
+        delete from paper_result where paper_id = #{paperId}
+    </delete>
+
+    <delete id="deletePaperResultByPaperIds" parameterType="String">
+        delete from paper_result where paper_id in 
+        <foreach item="paperId" collection="array" open="(" separator="," close=")">
+            #{paperId}
+        </foreach>
+    </delete>
+</mapper>

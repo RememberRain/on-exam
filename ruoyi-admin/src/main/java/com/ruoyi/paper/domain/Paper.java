@@ -9,7 +9,7 @@ import com.ruoyi.common.core.domain.BaseEntity;
 
 /**
  * 试卷管理对象 paper
- * 
+ *
  * @author ruoyi
  * @date 2024-01-19
  */
@@ -45,93 +45,93 @@ public class Paper extends BaseEntity
     private String updateUser;
 
     /** 开始时间 */
-    @JsonFormat(pattern = "yyyy-MM-dd")
-    @Excel(name = "开始时间", width = 30, dateFormat = "yyyy-MM-dd")
+    @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss")
+    @Excel(name = "开始时间", width = 30, dateFormat = "yyyy-MM-dd HH:mm:ss")
     private Date startTime;
 
     /** 结束时间 */
-    @JsonFormat(pattern = "yyyy-MM-dd")
-    @Excel(name = "结束时间", width = 30, dateFormat = "yyyy-MM-dd")
+    @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss")
+    @Excel(name = "结束时间", width = 30, dateFormat = "yyyy-MM-dd HH:mm:ss")
     private Date endTime;
 
-    public void setPaperId(String paperId) 
+    public void setPaperId(String paperId)
     {
         this.paperId = paperId;
     }
 
-    public String getPaperId() 
+    public String getPaperId()
     {
         return paperId;
     }
-    public void setName(String name) 
+    public void setName(String name)
     {
         this.name = name;
     }
 
-    public String getName() 
+    public String getName()
     {
         return name;
     }
-    public void setStatus(String status) 
+    public void setStatus(String status)
     {
         this.status = status;
     }
 
-    public String getStatus() 
+    public String getStatus()
     {
         return status;
     }
-    public void setSubject(String subject) 
+    public void setSubject(String subject)
     {
         this.subject = subject;
     }
 
-    public String getSubject() 
+    public String getSubject()
     {
         return subject;
     }
-    public void setCreateUser(String createUser) 
+    public void setCreateUser(String createUser)
     {
         this.createUser = createUser;
     }
 
-    public String getCreateUser() 
+    public String getCreateUser()
     {
         return createUser;
     }
-    public void setCreateUserId(String createUserId) 
+    public void setCreateUserId(String createUserId)
     {
         this.createUserId = createUserId;
     }
 
-    public String getCreateUserId() 
+    public String getCreateUserId()
     {
         return createUserId;
     }
-    public void setUpdateUser(String updateUser) 
+    public void setUpdateUser(String updateUser)
     {
         this.updateUser = updateUser;
     }
 
-    public String getUpdateUser() 
+    public String getUpdateUser()
     {
         return updateUser;
     }
-    public void setStartTime(Date startTime) 
+    public void setStartTime(Date startTime)
     {
         this.startTime = startTime;
     }
 
-    public Date getStartTime() 
+    public Date getStartTime()
     {
         return startTime;
     }
-    public void setEndTime(Date endTime) 
+    public void setEndTime(Date endTime)
     {
         this.endTime = endTime;
     }
 
-    public Date getEndTime() 
+    public Date getEndTime()
     {
         return endTime;
     }

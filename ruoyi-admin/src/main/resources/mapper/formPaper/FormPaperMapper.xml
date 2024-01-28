@@ -1,0 +1,48 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.ruoyi.formPaper.mapper.FormPaperMapper">
+
+
+    <resultMap type="FormPaper" id="FormPaperResult">
+        <result property="paperId"    column="paper_id"    />
+        <result property="questionId" column="question_id"   />
+    </resultMap>
+
+    <insert id="addChoiceFormPaper" parameterType="FormPaper">
+        insert into pq_choice
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="paperId != null and paperId != ''">paper_id,</if>
+            <if test="questionId != null and questionId != ''">question_id,</if>
+        </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="paperId != null and paperId != ''">#{paperId},</if>
+            <if test="questionId != null and questionId != ''">#{questionId},</if>
+        </trim>
+    </insert>
+
+    <insert id="addTfFormPaper" parameterType="FormPaper">
+        insert into pq_tf
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="paperId != null and paperId != ''">paper_id,</if>
+            <if test="questionId != null and questionId != ''">question_id,</if>
+        </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="paperId != null and paperId != ''">#{paperId},</if>
+            <if test="questionId != null and questionId != ''">#{questionId},</if>
+        </trim>
+    </insert>
+
+    <insert id="addSubFormPaper" parameterType="FormPaper">
+        insert into pq_sub
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="paperId != null and paperId != ''">paper_id,</if>
+            <if test="questionId != null and questionId != ''">question_id,</if>
+        </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="paperId != null and paperId != ''">#{paperId},</if>
+            <if test="questionId != null and questionId != ''">#{questionId},</if>
+        </trim>
+    </insert>
+</mapper>

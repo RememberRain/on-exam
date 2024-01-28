@@ -32,7 +32,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
     <insert id="insertTestEnglishTf" parameterType="TestEnglishTf">
         <selectKey keyProperty="questionId" resultType="String" order="BEFORE">
             select concat(date_format(curdate(), '%Y%m%d'), IFNULL((count(*) + 1), 1))
-            from test_english_sub
+            from test_english_tf
             where substr(question_id, 1, 8) = date_format(curdate(), '%Y%m%d')
         </selectKey>
         insert into test_english_tf
